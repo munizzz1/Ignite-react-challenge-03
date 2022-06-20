@@ -1,1 +1,66 @@
-// TODO
+.pageContainer {
+    padding-bottom: 6.375rem;
+}
+
+.logoContainer {
+    display: inline-block;
+    margin: 5rem 0 4rem;
+}
+
+.postList {
+    .post {
+        & + .post {
+            display: inline-block;
+            margin-top: 3rem;
+        }
+
+        &:hover .title {
+            color: var(--pink-500);
+        }
+
+        .title {
+            color: var(--gray-100);
+            font-size: 1.75rem;
+            line-height: 2.125rem;
+
+            transition: 0.2s color;
+        }
+
+        .subtitle {
+            font-size: 1.125rem;
+            margin-top: 0.5rem;
+        }
+
+        .info {
+            display: flex;
+            color: var(--gray-300);
+
+            margin-top: 1.5rem;
+
+            > .author, > .createdAt {
+                display: flex;
+                align-items: center;
+                
+                margin-right: 2rem;
+
+                > :last-child {
+                margin-left: 0.5rem;
+                }
+            }
+        }
+    }
+}
+
+.morePostsContainer {
+    margin-top: 4rem;
+
+    button {
+        border: 0;
+
+        background-color: transparent;
+        color: var(--pink-500);
+
+        font-size: 1.125rem;
+        font-weight: 600;
+    }
+}

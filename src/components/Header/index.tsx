@@ -1,3 +1,14 @@
-export default function Header() {
-  // TODO
+import Link from 'next/link';
+import styles from './header.module.scss';
+
+export function Header() {
+  return (
+    <div className={styles.headerContainer}>
+      <Link href="/">
+        <a href="">
+          <img src="/logo.svg" alt="logo" />
+        </a>
+      </Link>
+    </div>
+  )
 }

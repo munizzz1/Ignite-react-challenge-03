@@ -1,1 +1,14 @@
-// TODO
+.pageContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+  
+    > * {
+      width: 45rem;
+      padding-inline: 0.625rem;
+  
+      @media (max-width: 720px) {
+        max-width: 45rem;
+      }
+    }
+  }
