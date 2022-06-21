@@ -125,16 +125,13 @@ export const getStaticProps: GetStaticProps<HomeProps> = async ({
   preview = false,
   previewData,
 }) => {
-  const prismic = getPrismicClient();
-  const postsResponse = await prismic.query(
-    Prismic.Predicates.at('document.type', 'posts'),
-    {
-      orderings : '[document.first_publication_date desc, my.posts.title desc]',
-      fetch: ['posts.title', 'posts.subtitle', 'posts.author'],
-      pageSize: 3,
-      ref: previewData?.ref ?? null,
-    }
-  );
+  const prismic = getPrismicClient({});
+  const postsResponse = await prismic.getByType('posts', {
+    fetch: ['posts.title', 'posts.subtitle', 'posts.author'],
+    pageSize: 3,
+    ref: previewData?.ref ?? null,
+    
+  });
 
   const posts: Post[] = postsResponse.results.map(result => ({
     uid: result.uid,

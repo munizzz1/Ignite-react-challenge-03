@@ -8,7 +8,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 
 import { getPrismicClient } from '../../services/prismic';
 
-import { Header } from '../../components/Header';
+import Header from '../../components/Header';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
@@ -141,15 +141,11 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const prismic = getPrismicClient();
-  const postsResponse = await prismic.query(
-    Prismic.Predicates.at('document.type', 'posts'),
-    {
-      orderings: '[document.first_publication_date desc]',
+    const prismic = getPrismicClient({});
+    const postsResponse = await prismic.getByType('posts', {
       fetch: ['posts.title'],
       pageSize: 100,
-    }
-  );
+    });
 
   const paths = postsResponse.results.map(result => ({
     params: {slug: result.uid}
@@ -161,11 +157,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 };
 
-export const getStaticProps: GetStaticProps<PostProps> = async ({
-  params,
-  preview = false,
-  previewData,
-}) => {
+export const getStaticProps: GetStaticProps<PostProps> = async ({ params, preview = false, previewData }) => {
   const {
     slug,
   } = params;
@@ -179,30 +171,26 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({
     }
   }
 
-  const prismic = getPrismicClient();
+  const prismic = getPrismicClient({});
   const response = await prismic.getByUID('posts', String(slug), {
     ref: previewData?.ref ?? null,
   });
 
-  const previousPostResponse = await prismic.query(
-    Prismic.Predicates.at('document.type', 'posts'),
+  const previousPostResponse = await prismic.getByType('posts',
     {
       fetch: ['posts.title'],
       pageSize: 2,
       after: String(response.id),
-      orderings : '[document.first_publication_date desc, my.posts.title desc]',
     }
   )
 
   const previousPost = previousPostResponse.results[0] ?? null
 
-  const nextPostResponse = await prismic.query(
-    Prismic.Predicates.at('document.type', 'posts'),
+  const nextPostResponse = await prismic.getByType('posts',
     {
       fetch: ['posts.title'],
       pageSize: 2,
       after: String(response.id),
-      orderings : '[document.first_publication_date, my.posts.title]',
     }
   )
 
